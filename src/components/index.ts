@@ -1,0 +1,18 @@
+import { type App, type Component } from 'vue';
+
+// 引入项目中全部的全局组件
+import SvgIcon from '@/components/SvgIcon/index.vue';
+
+// 全局对象
+const allGlobalComponents: Record<string, Component> = { SvgIcon };
+
+// 向外暴露插件对象
+export default {
+  // 在install方法
+  install(app: App) {
+    // 注册项目全部的全局组件
+    Object.entries(allGlobalComponents).forEach(([key, component]) => {
+      app.component(key, component);
+    });
+  },
+};
