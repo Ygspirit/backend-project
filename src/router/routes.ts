@@ -18,7 +18,6 @@ export const constantRoute: Array<RouteRecordRaw> = [
     name: 'layout',
     meta: {
       title: '',
-
       icon: '',
     },
     redirect: '/home',
