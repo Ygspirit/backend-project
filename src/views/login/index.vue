@@ -22,8 +22,8 @@
 <script setup lang="ts">
 defineOptions({ name: 'Login' });
 import { User, Lock } from '@element-plus/icons-vue';
-import { reactive, ref } from 'vue';
 import { ElNotification } from 'element-plus';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 const $router = useRouter();
 import { useUserStore } from '@/store/modules/user';

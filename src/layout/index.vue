@@ -2,25 +2,33 @@
   <div class="layout_container">
     <div class="layout_slider">
       <Logo />
+      <!-- 展示菜单 -->
+      <!-- 滚动组件 -->
       <div class="mune_container">
         <el-scrollbar height="100%">
+          <!-- 菜单组件 -->
           <el-menu background-color="#001529" text-color="white">
-            <MenuItem :menuList="menuStore.menuList"></MenuItem>
+            <Menu :menuList="userStore.menuRoutes"></Menu>
           </el-menu>
         </el-scrollbar>
       </div>
     </div>
-    <div class="layout_tabbar"></div>
-    <div class="layout_main"></div>
+    <!-- 顶部导航 -->
+    <div class="layout_tabbar" style="background-color: aquamarine">123</div>
+    <!-- 内容展示区域 -->
+    <div class="layout_main" style="background-color: burlywood">
+      <Main></Main>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 defineOptions({ name: 'Layout' });
-import Logo from './Logo.vue';
-import MenuItem from './MenuItem.vue';
-import { useMenuStore } from '@/store/modules/menu';
-const menuStore = useMenuStore();
+import Logo from './logo/index.vue';
+import Menu from './menu/index.vue';
+import Main from './main/index.vue';
+import { useUserStore } from '@/store/modules/user';
+const userStore = useUserStore();
 </script>
 
 <style scoped lang="scss">

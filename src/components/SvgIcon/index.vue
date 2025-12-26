@@ -6,6 +6,8 @@
 
 <script setup lang="ts">
 defineOptions({ name: 'SvgIcon' });
+
+// 接受父组件传递过来的参数
 defineProps({
   prefix: {
     type: String,
@@ -25,6 +27,7 @@ defineProps({
     default: '16px',
   },
 });
+
 </script>
 
 <style scoped></style>

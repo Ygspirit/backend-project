@@ -6,6 +6,11 @@ const API = {
   LOGIN_URL: '/user/login',
   USERINFO_URL: '/user/info',
 } as const;
+// as const 断言
+// TypeScript 3.4 引入了 const 断言。当你使用 as const 时，TypeScript 会做以下事情：
+// 将对象的所有属性设置为 readonly（只读）。
+// 将数组转换为只读元组（如果适用）。
+// 将字符串、数字等字面量类型推断为具体的字面量类型，而不是一般的 string、number 等。
 
 // 暴露请求函数
 // 登录接口方法

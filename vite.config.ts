@@ -20,6 +20,7 @@ export default defineConfig({
       // Specify symbolId format
       symbolId: 'icon-[dir]-[name]',
     }),
+    // mock配置
     viteMockServe({
       supportTs: true, // 支持 ts
       logger: false, // 是否在控制台显示请求日志
@@ -30,6 +31,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+      // import.meta.url：是ES模块的一个变量，表示当前模块的URL（在Vite配置文件中，它指向vite.config.ts文件的URL）。
+      // new URL('./src', import.meta.url)：创建一个相对于当前配置文件所在目录的./src目录的URL对象。
+      // fileURLToPath：Node.js内置模块（从'url'导入）的方法，用于将文件URL转换为文件路径。
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },

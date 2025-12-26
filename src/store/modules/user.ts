@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { reqLogin } from '@/api/user';
 import type { loginForm, loginResponseData } from '@/api/user/type';
+import { constantRoute } from '@/router/routes';
 
 export const useUserStore = defineStore('user', () => {
   // 用户唯一标识token
   const token = ref(localStorage.getItem('TOKEN'));
+  // 仓库存储生成菜单需要的数组
+  const menuRoutes = reactive(constantRoute);
 
   // 用户登录
   async function userLogin(loginData: loginForm) {
@@ -19,5 +22,5 @@ export const useUserStore = defineStore('user', () => {
       return Promise.reject(new Error(res.data.message));
     }
   }
-  return { token, userLogin };
+  return { token, userLogin, menuRoutes };
 });

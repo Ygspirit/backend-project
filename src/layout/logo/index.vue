@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: 'logo' });
+defineOptions({ name: 'Logo' });
 import setting from '@/setting';
 </script>
 
