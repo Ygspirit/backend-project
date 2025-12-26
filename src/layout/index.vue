@@ -1,7 +1,7 @@
 <template>
   <div class="layout_container">
     <!-- 左侧菜单 -->
-    <div class="layout_slider">
+    <div class="layout_slider" :class="{ fold: layoutSettingStore.folded }">
       <Logo />
       <!-- 展示菜单 -->
       <!-- 滚动组件 -->
@@ -10,6 +10,7 @@
           <!-- 菜单组件 -->
           <el-menu
             :default-active="$route.path"
+            :collapse="layoutSettingStore.folded"
             background-color="#001529"
             text-color="white"
             active-text-color="#FFDE59"
@@ -20,12 +21,12 @@
       </div>
     </div>
     <!-- 顶部导航 -->
-    <div class="layout_tabbar">
+    <div class="layout_tabbar" :class="{ fold: layoutSettingStore.folded }">
       <!-- layout组件的顶部导航tabbar -->
       <Tabbar></Tabbar>
     </div>
     <!-- 内容展示区域 -->
-    <div class="layout_main" style="background-color: burlywood">
+    <div class="layout_main" style="background-color: burlywood" :class="{ fold: layoutSettingStore.folded }">
       <Main></Main>
     </div>
   </div>
@@ -47,6 +48,9 @@ import Tabbar from './tabbar/index.vue';
 // 获取用户相关的小仓库
 import { useUserStore } from '@/store/modules/user';
 const userStore = useUserStore();
+// 获取layout配置相关的小仓库
+import { useLayoutSettingStore } from '@/store/modules/setting';
+const layoutSettingStore = useLayoutSettingStore();
 </script>
 
 <style scoped lang="scss">
@@ -58,6 +62,7 @@ const userStore = useUserStore();
     width: $base-menu-width;
     height: 100vh;
     background: $base-menu-background;
+    transition: all 0.3s;
     .mune_container {
       width: 100%;
       height: calc(100vh - $base-menu-logo-height);
@@ -69,6 +74,9 @@ const userStore = useUserStore();
         }
       }
     }
+    &.fold {
+      width: $base-menu-min-width;
+    }
   }
   .layout_tabbar {
     width: calc(100% - $base-menu-width);
@@ -76,6 +84,11 @@ const userStore = useUserStore();
     position: fixed;
     top: 0;
     left: $base-menu-width;
+    transition: all 0.3s;
+    &.fold {
+      width: calc(100% - $base-menu-min-width);
+      left: $base-menu-min-width;
+    }
   }
   .layout_main {
     width: calc(100% - $base-menu-width);
@@ -85,6 +98,11 @@ const userStore = useUserStore();
     left: $base-menu-width;
     overflow: auto;
     padding: 20px;
+    transition: all 0.3s;
+    &.fold {
+      width: calc(100% - $base-menu-min-width);
+      left: $base-menu-min-width;
+    }
   }
 }
 </style>

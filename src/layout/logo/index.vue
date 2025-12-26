@@ -15,7 +15,7 @@ import setting from '@/setting';
   display: flex;
   align-items: center;
   height: $base-menu-logo-height;
-  padding: 10px 0px 0px 20px;
+  padding: 10px 0px 0px 10px;
   img {
     width: 40px;
     margin-right: 10px;
