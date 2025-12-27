@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, reactive } from 'vue';
-import { reqLogin } from '@/api/user';
-import type { loginForm, loginResponseData } from '@/api/user/type';
+import { reqLogin, reqUserInfo } from '@/api/user';
+import type { loginForm, loginResponseData, userResponseData } from '@/api/user/type';
 import { constantRoute } from '@/router/routes';
 
 export const useUserStore = defineStore('user', () => {
@@ -22,5 +22,19 @@ export const useUserStore = defineStore('user', () => {
       return Promise.reject(new Error(res.data.message));
     }
   }
-  return { token, userLogin, menuRoutes };
+
+  const username = ref('');
+  const avatar = ref('');
+  // 用户基本信息
+  // 获取用户信息
+  async function userInfo() {
+    const res: userResponseData = await reqUserInfo();
+    if (res.code === 200) {
+      username.value = res.data.checkUser.username;
+      avatar.value = res.data.checkUser.avatar;
+    } else {
+    }
+  }
+
+  return { token, userLogin, menuRoutes, userInfo, username, avatar };
 });

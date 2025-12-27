@@ -14,7 +14,7 @@ export interface loginResponseData {
 }
 
 // 定义服务器返回用户信息相关的数据类型
-interface user {
+interface checkUser {
   userId: number;
   avatar: string;
   username: string;
@@ -27,5 +27,5 @@ interface user {
 }
 export interface userResponseData {
   code: number;
-  data: user;
+  data: { checkUser: checkUser };
 }
