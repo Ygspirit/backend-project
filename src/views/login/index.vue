@@ -24,8 +24,9 @@ defineOptions({ name: 'Login' });
 import { User, Lock } from '@element-plus/icons-vue';
 import { ElNotification } from 'element-plus';
 import { reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 const $router = useRouter();
+const $route = useRoute();
 import { useUserStore } from '@/store/modules/user';
 const userStore = useUserStore();
 import { getTextTime } from '@/utils/time';
@@ -43,12 +44,13 @@ async function login() {
   // 登录请求
   try {
     await userStore.userLogin(loginForm);
+    let redirect: any = $route.query.redirect;
+    $router.push({ path: redirect || '/' });
     ElNotification({
       title: '欢迎回来',
       type: 'success',
       message: `hi，${textTime.value}好`,
     });
-    $router.push('/');
     loading.value = false;
   } catch (error) {
     ElNotification({
