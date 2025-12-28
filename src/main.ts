@@ -24,6 +24,9 @@ import '@/styles/index.scss';
 import router from '@/router/index.ts';
 app.use(router);
 
+// 路由鉴权
+import '@/permission.ts';
+
 // pinia
 import pinia from '@/store/index.ts';
 app.use(pinia);
