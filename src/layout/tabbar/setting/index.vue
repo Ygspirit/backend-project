@@ -52,11 +52,11 @@ const fullScreen = () => {
 };
 
 // 退出登录按钮点击回调
-const logout = () => {
+const logout =async () => {
   // 第一件事：需要向服务器发送请求【退出登录接口】，通知服务器清除token【模拟】
   // 第二件事：仓库中关于用于相关的数据清空（比如token、username、avatar）
   // 第三件事：跳转到登录页面
-  userStore.userLogout();
+await  userStore.userLogout();
   $router.push({ path: '/login' ,query: { redirect: $route.path } });
 };
 </script>
