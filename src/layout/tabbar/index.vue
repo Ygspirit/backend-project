@@ -21,6 +21,7 @@ import Setting from './setting/index.vue';
   height: 100%;
   display: flex;
   justify-content: space-between;
+  background-color: #fff;
   .tabbar_left {
     display: flex;
     align-items: center;
