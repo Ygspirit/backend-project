@@ -84,7 +84,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'Trademark' });
 import { ref, onMounted, reactive } from 'vue';
-import { reqHasTradeMark } from '@/api/product/trademark';
+import { reqHasTradeMark, reqAddOrUpdateTrademark } from '@/api/product/trademark';
 import type { Records, TradeMarkResponseData, TradeMark } from '@/api/product/trademark/type';
 import { useUserStore } from '@/store/modules/user';
 import { ElMessage, type UploadProps } from 'element-plus';
@@ -149,6 +149,9 @@ const addTrademark = () => {
 // 修改已有品牌的按钮回调
 const updateTrademark = () => {
   dialogFormVisible.value = true;
+  // 收集数据清空
+  trademarkParams.tmName = '';
+  trademarkParams.logoUrl = '';
 };
 
 // 对话框底部取消按钮
@@ -157,8 +160,29 @@ const cancel = () => {
 };
 
 //
-const confirm = () => {
-  dialogFormVisible.value = false;
+const confirm = async () => {
+  const res = await reqAddOrUpdateTrademark(trademarkParams);
+  console.log(res);
+
+  if (res.code == 200) {
+    // 关闭对话框
+    dialogFormVisible.value = false;
+    // 弹出提示信息
+    ElMessage({
+      type: 'success',
+      message: '添加品牌成功',
+    });
+    // 再次发请求，获取已有全部的品牌数据
+    getHasTrademark();
+  } else {
+    // 添加品牌失败
+    ElMessage({
+      type: 'error',
+      message: '添加品牌失败',
+    });
+    // 关闭对话框
+    dialogFormVisible.value = false;
+  }
 };
 
 // 上传图片组件-->上传图片之前触发的钩子函数
