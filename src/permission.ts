@@ -1,6 +1,7 @@
 // 路由鉴权：项目中路由能不能被访问的权限的设置
 import router from '@/router';
 import setting from './setting';
+// @ts-ignore
 import nprogress from 'nprogress'; // 引入进度条插件
 import 'nprogress/nprogress.css'; // 引入进度条样式
 nprogress.configure({ showSpinner: false });

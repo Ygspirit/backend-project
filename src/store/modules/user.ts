@@ -3,7 +3,7 @@ import { ref, reactive } from 'vue';
 // 引入登录与获取用户信息的接口函数
 import { reqLogin, reqUserInfo, reqLogout } from '@/api/user';
 // 引入相关类型
-// import type { loginForm, loginResponseData, userResponseData } from '@/api/user/type';
+import type { loginFormData, loginResponseData, userInfoReponseData } from '@/api/user/type';
 // 引入操作本地存储的工具函数
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token';
 // 引入常量路由
@@ -17,8 +17,8 @@ export const useUserStore = defineStore('user', () => {
   const menuRoutes = reactive(constantRoute);
 
   // 用户登录
-  async function userLogin(loginData: any) {
-    const res: any = await reqLogin(loginData);
+  async function userLogin(loginData: loginFormData) {
+    const res: loginResponseData = await reqLogin(loginData);
     // console.log(res);
     if (res.code === 200) {
       token.value = res.data as string;
@@ -33,7 +33,7 @@ export const useUserStore = defineStore('user', () => {
   const avatar = ref('');
   // 获取用户信息
   async function userInfo() {
-    const res: any = await reqUserInfo();
+    const res: userInfoReponseData = await reqUserInfo();
     // console.log(res);
     if (res.code === 200) {
       username.value = res.data.name;
@@ -45,7 +45,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function userLogout() {
-    let res = await reqLogout();
+    let res: any = await reqLogout();
     // console.log('111', res);
     if (res.code == 200) {
       token.value = '';
@@ -54,7 +54,7 @@ export const useUserStore = defineStore('user', () => {
       avatar.value = '';
       return 'ok';
     } else {
-      return Promise.reject(new Error(res.message))
+      return Promise.reject(new Error(res.message));
     }
   }
 
