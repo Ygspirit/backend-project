@@ -26,7 +26,7 @@
       <Tabbar></Tabbar>
     </div>
     <!-- 内容展示区域 -->
-    <div class="layout_main" style="background-color: burlywood" :class="{ fold: layoutSettingStore.folded }">
+    <div class="layout_main"  :class="{ fold: layoutSettingStore.folded }">
       <Main></Main>
     </div>
   </div>
