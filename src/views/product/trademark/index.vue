@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column label="品牌操作">
         <template #="{ row, $index }">
-          <el-button type="primary" size="small" icon="Edit" @click="updateTrademark"></el-button>
+          <el-button type="primary" size="small" icon="Edit" @click="updateTrademark(row)"></el-button>
           <el-button type="primary" size="small" icon="Delete" @click=""></el-button>
         </template>
       </el-table-column>
@@ -53,7 +53,7 @@
       v-model:属性用户控制对话框的显示与隐藏
       title：设置对话框左上角的标题
   -->
-  <el-dialog v-model="dialogFormVisible" title="添加品牌">
+  <el-dialog v-model="dialogFormVisible" :title="trademarkParams.id ? '修改品牌' : '添加品牌'">
     <el-form style="width: 80%">
       <el-form-item label="品牌名称" label-width="80px">
         <el-input placeholder="请输入品牌名称" v-model="trademarkParams.tmName" />
@@ -144,14 +144,23 @@ const sizeChange = () => {
 // 添加已有品牌的按钮的回调
 const addTrademark = () => {
   dialogFormVisible.value = true;
+  // 收集数据清空
+  trademarkParams.id = 0;
+  trademarkParams.tmName = '';
+  trademarkParams.logoUrl = '';
 };
 
 // 修改已有品牌的按钮回调
-const updateTrademark = () => {
+// row:row即为当前已有的品牌
+const updateTrademark = (row: TradeMark) => {
+  // 对话框显示
   dialogFormVisible.value = true;
-  // 收集数据清空
-  trademarkParams.tmName = '';
-  trademarkParams.logoUrl = '';
+  // ES6语法合并对象
+  Object.assign(trademarkParams, row);
+  // trademarkParams.id = row.id;
+  // // 展示已有品牌的数据
+  // trademarkParams.tmName = row.tmName;
+  // trademarkParams.logoUrl = row.logoUrl;
 };
 
 // 对话框底部取消按钮
@@ -170,15 +179,15 @@ const confirm = async () => {
     // 弹出提示信息
     ElMessage({
       type: 'success',
-      message: '添加品牌成功',
+      message: trademarkParams.id ? '修改品牌成功' : '添加品牌成功',
     });
     // 再次发请求，获取已有全部的品牌数据
-    getHasTrademark();
+    getHasTrademark(trademarkParams.id ? pageNo.value : 1);
   } else {
     // 添加品牌失败
     ElMessage({
       type: 'error',
-      message: '添加品牌失败',
+      message: trademarkParams.id ? '修改品牌失败' : '添加品牌失败',
     });
     // 关闭对话框
     dialogFormVisible.value = false;
