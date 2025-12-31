@@ -25,7 +25,7 @@ export const useUserStore = defineStore('user', () => {
       localStorage.setItem('TOKEN', res.data as string);
       return 'ok';
     } else {
-      return Promise.reject(new Error(res.data.message));
+      return Promise.reject(new Error(res.data));
     }
   }
 
