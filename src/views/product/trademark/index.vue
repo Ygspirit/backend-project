@@ -54,11 +54,11 @@
       title：设置对话框左上角的标题
   -->
   <el-dialog v-model="dialogFormVisible" :title="trademarkParams.id ? '修改品牌' : '添加品牌'">
-    <el-form style="width: 80%">
-      <el-form-item label="品牌名称" label-width="80px">
+    <el-form style="width: 80%" :model="trademarkParams" :rules="rules" ref="formRef">
+      <el-form-item label="品牌名称" label-width="80px" prop="tmName">
         <el-input placeholder="请输入品牌名称" v-model="trademarkParams.tmName" />
       </el-form-item>
-      <el-form-item label="品牌LOGO" label-width="80px">
+      <el-form-item label="品牌LOGO" label-width="80px" prop="logoUrl">
         <!-- upload组件属性：action -->
         <el-upload
           class="avatar-uploader"
@@ -83,7 +83,7 @@
 
 <script setup lang="ts">
 defineOptions({ name: 'Trademark' });
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, reactive, nextTick } from 'vue';
 import { reqHasTradeMark, reqAddOrUpdateTrademark } from '@/api/product/trademark';
 import type { Records, TradeMarkResponseData, TradeMark } from '@/api/product/trademark/type';
 import { useUserStore } from '@/store/modules/user';
@@ -106,6 +106,8 @@ let trademarkParams = reactive<TradeMark>({
 });
 // 上传图片请求头token
 let headers = ref({ Token: userStore.token });
+// 获取el-form组件实例
+let formRef = ref();
 
 // 获取已有品牌的接口封装为一个函数：在任何情况下获取数据，调用此函数即可
 const getHasTrademark = async (pager = 1) => {
@@ -137,7 +139,6 @@ onMounted(() => {
 // 这个自定义事件，分页器组件会将下拉菜单选中数据返回
 const sizeChange = () => {
   // 当前每一页的数据量发生变化时，当前页码归1
-
   getHasTrademark();
 };
 
@@ -148,11 +149,25 @@ const addTrademark = () => {
   trademarkParams.id = 0;
   trademarkParams.tmName = '';
   trademarkParams.logoUrl = '';
+
+  // dom更新后清除校验规则
+  nextTick(() => {
+    formRef.value.clearValidate('tmName');
+    formRef.value.clearValidate('logoUrl');
+  });
+  // 第一种写法：ts的问号语法
+  // formRef.value?.clearValidate('tmName');
+  // formRef.value?.clearValidate('logoUrl');
 };
 
 // 修改已有品牌的按钮回调
 // row:row即为当前已有的品牌
 const updateTrademark = (row: TradeMark) => {
+  // 清空校验规则错误提示信息
+  nextTick(() => {
+    formRef.value.clearValidate('tmName');
+    formRef.value.clearValidate('logoUrl');
+  });
   // 对话框显示
   dialogFormVisible.value = true;
   // ES6语法合并对象
@@ -170,9 +185,10 @@ const cancel = () => {
 
 //
 const confirm = async () => {
+  // 发送请求之前，要对整个表单进行校验
+  await formRef.value.validate();
   const res = await reqAddOrUpdateTrademark(trademarkParams);
-  console.log(res);
-
+  // console.log(res);
   if (res.code == 200) {
     // 关闭对话框
     dialogFormVisible.value = false;
@@ -221,6 +237,35 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => 
   // response:即为当前这次上传图片post请求服务器返回的数据
   // 收集上传图片的地址，添加新品牌时带给服务器
   trademarkParams.logoUrl = response.data;
+  // 图片上传成功，清除对应玉佩校验效果
+  formRef.value.clearValidate('logoUrl');
+};
+
+// 品牌自定义校验规则的方法
+const validatorTmName = (rule: any, value: any, callBack: any) => {
+  // 自定义校验规则
+  if (value.trim().length >= 2) {
+    callBack();
+  } else {
+    callBack(new Error('品牌名称位数大于等于两位'));
+  }
+};
+// 品牌LOGO图片的自定义校验规则
+const validatorLogoUrl = (rule: any, value: any, callBack: any) => {
+  if (value) {
+    callBack();
+  } else {
+    callBack(new Error('LOGO图片必须上传'));
+  }
+};
+// 表单校验规则对象
+const rules = {
+  tmName: [
+    // required：这个字段必须校验
+    // trigger:代表触发校验规则的时机
+    { required: true, trigger: 'blur', validator: validatorTmName },
+  ],
+  logoUrl: [{ required: true, trigger: 'change', validator: validatorLogoUrl }],
 };
 </script>
 <style scoped>
