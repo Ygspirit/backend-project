@@ -2,12 +2,13 @@ import { type App, type Component } from 'vue';
 
 // 引入项目中全部的全局组件
 import SvgIcon from '@/components/SvgIcon/index.vue';
+import Category from '@/components/Category/index.vue'
 
 // 引入Element Plus全部图标组件
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 
 // 全局对象
-const allGlobalComponents: Record<string, Component> = { SvgIcon };
+const allGlobalComponents: Record<string, Component> = { SvgIcon, Category };
 
 // 向外暴露插件对象
 export default {
