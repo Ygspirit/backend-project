@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { CategoryResponseData } from '@/api/product/attr/type';
+import type { CategoryResponseData, CategoryObj } from '@/api/product/attr/type';
 
 // 引入分类接口函数
 import { reqC1 } from '@/api/product/attr';
 
 export const useCategoryStore = defineStore('Category', () => {
     // 存储一级分类的数据
-    let c1Arr = ref<Array<any>>([]);
+    let c1Arr = ref<Array<CategoryObj>>([]);
     let c1Id = ref<number | string>('');
     // 获取一级分类数据的函数
     const getC1 = (async () => {
-        let res:CategoryResponseData = await reqC1();
+        let res: CategoryResponseData = await reqC1();
         if (res.code == 200) {
             c1Arr.value = res.data;
         }
